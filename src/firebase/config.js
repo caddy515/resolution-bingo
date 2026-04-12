@@ -11,27 +11,27 @@ export const firebaseConfig = {
   apiKey:
     process.env.EXPO_PUBLIC_FIREBASE_API_KEY ||
     extra.firebaseApiKey ||
-    'AIzaSyCn6JVwtQf_I4OggTXpHeuTjWCALMUi_rY',
+    'PASTE_FIREBASE_API_KEY',
   authDomain:
     process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN ||
     extra.firebaseAuthDomain ||
-    'resolution-bingo-be98b.firebaseapp.com',
+    'PASTE_FIREBASE_AUTH_DOMAIN',
   projectId:
     process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID ||
     extra.firebaseProjectId ||
-    'resolution-bingo-be98b',
+    'PASTE_FIREBASE_PROJECT_ID',
   storageBucket:
     process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET ||
     extra.firebaseStorageBucket ||
-    'resolution-bingo-be98b.firebasestorage.app',
+    'PASTE_FIREBASE_STORAGE_BUCKET',
   messagingSenderId:
     process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ||
     extra.firebaseMessagingSenderId ||
-    '553285296918',
+    'PASTE_FIREBASE_MESSAGING_SENDER_ID',
   appId:
     process.env.EXPO_PUBLIC_FIREBASE_APP_ID ||
     extra.firebaseAppId ||
-    '1:553285296918:web:b0a1833be1bbd49704e637',
+    'PASTE_FIREBASE_APP_ID',
 };
 
 export const firebaseAppCheckSiteKey =

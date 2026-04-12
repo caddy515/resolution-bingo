@@ -9,7 +9,6 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "extra": {
-      "firebaseAppCheckSiteKey": "6Lc6YpwsAAAAAGbSEy6nOfuibTUSNpJPnP6r8vPP",
       "eas": {
         "projectId": "e76e7b08-7782-4722-a061-a0659ab1a831"
       }
