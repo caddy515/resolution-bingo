@@ -15,7 +15,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.efldesigns.resolutionbingo",
-      "supportsTablet": true,
+      "supportsTablet": false,
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "Allow Resolution Bingo to save card snapshots to your photo library.",
         "ITSAppUsesNonExemptEncryption": false
