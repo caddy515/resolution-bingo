@@ -1,0 +1,54 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isNonEmptyString(value, maxLength) {
+      return value is string && value.size() > 0 && value.size() <= maxLength;
+    }
+
+    function isValidCard(cardId) {
+      return request.resource.data.keys().hasOnly([
+          'id',
+          'year',
+          'title',
+          'centerOption',
+          'availableCategories',
+          'categoryColors',
+          'customCategories',
+          'entries',
+          'squares',
+          'updatedAt'
+        ]) &&
+        request.resource.data.id == cardId &&
+        isNonEmptyString(request.resource.data.year, 12) &&
+        isNonEmptyString(request.resource.data.title, 80) &&
+        isNonEmptyString(request.resource.data.centerOption, 80) &&
+        request.resource.data.availableCategories is list &&
+        request.resource.data.availableCategories.size() <= 40 &&
+        request.resource.data.customCategories is list &&
+        request.resource.data.customCategories.size() <= 20 &&
+        request.resource.data.categoryColors is map &&
+        request.resource.data.entries is list &&
+        request.resource.data.entries.size() == 25 &&
+        request.resource.data.squares is list &&
+        request.resource.data.squares.size() == 25;
+    }
+
+    match /users/{uid} {
+      allow read, write: if false;
+
+      match /cards/{cardId} {
+        allow get, list, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid) && isValidCard(cardId);
+      }
+    }
+  }
+}
