@@ -83,3 +83,51 @@ Notes:
 7. Run the app and create a test account.
 
 The app code is already written. What you need to provide is only the Firebase project configuration and the Firebase console setup.
+
+## Resume work next time
+
+When coming back to this project later, start here:
+
+```bash
+cd /Users/evanluscher/resolution-bingo
+git pull
+git status
+```
+
+If you want to run the app locally:
+
+```bash
+npm install
+npx expo start
+```
+
+If you want to continue iOS release work:
+
+```bash
+npx eas build -p ios --profile production
+npx eas submit -p ios --profile production
+```
+
+Important reminders:
+
+- Firebase values are no longer hardcoded in the repo.
+- Production/TestFlight builds depend on EAS environment variables being set.
+- The required production EAS env vars are:
+
+```bash
+EXPO_PUBLIC_FIREBASE_API_KEY
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN
+EXPO_PUBLIC_FIREBASE_PROJECT_ID
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+EXPO_PUBLIC_FIREBASE_APP_ID
+EXPO_PUBLIC_FIREBASE_APPCHECK_SITE_KEY
+```
+
+- App Check should stay in `Monitoring` for native iOS until native App Check is implemented properly.
+- Public docs are hosted from the repo `/docs` folder through GitHub Pages.
+- Public URLs currently expected:
+  - `https://caddy515.github.io/resolution-bingo/`
+  - `https://caddy515.github.io/resolution-bingo/privacy-policy.html`
+  - `https://caddy515.github.io/resolution-bingo/terms-of-use.html`
+  - `https://caddy515.github.io/resolution-bingo/support.html`
