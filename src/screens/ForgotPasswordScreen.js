@@ -32,16 +32,19 @@ export default function ForgotPasswordScreen({ error, loading, onBack, onSubmit 
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <SectionCard title="Reset your password" description="Enter the email tied to your account and Firebase will send the reset link.">
           <View style={styles.form}>
             <TextInput
               autoCapitalize="none"
+              autoComplete="email"
               autoCorrect={false}
+              editable={!loading}
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor="#94a3b8"
               style={styles.input}
+              textContentType="emailAddress"
               value={email}
               onChangeText={(value) => {
                 setEmail(value);

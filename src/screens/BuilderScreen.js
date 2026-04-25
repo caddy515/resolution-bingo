@@ -333,12 +333,6 @@ export default function BuilderScreen({
         </View>
       ) : null}
 
-      <View style={styles.accountActionsWrap}>
-        <Pressable onPress={confirmDeleteAccount} style={({ pressed }) => [styles.dangerButton, pressed && styles.pressed]}>
-          <Text style={styles.dangerButtonText}>{deletingAccount ? 'Deleting account...' : 'Delete account'}</Text>
-        </Pressable>
-      </View>
-
       <View style={[styles.mainLayout, isWide && styles.mainLayoutWide]}>
         <View style={[styles.leftColumn, isWide && styles.leftColumnWide]}>
           <SectionCard
@@ -587,6 +581,12 @@ export default function BuilderScreen({
           <Text style={styles.primaryButtonText}>{loading ? 'Saving...' : 'Save card'}</Text>
         </Pressable>
       </View>
+
+      <View style={styles.bottomAccountActionsWrap}>
+        <Pressable onPress={confirmDeleteAccount} style={({ pressed }) => [styles.dangerButton, pressed && styles.pressed]}>
+          <Text style={styles.dangerButtonText}>{deletingAccount ? 'Deleting account...' : 'Delete account'}</Text>
+        </Pressable>
+      </View>
     </ScrollView>
   );
 }
@@ -642,9 +642,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
   },
-  accountActionsWrap: {
-    paddingHorizontal: 2,
-  },
   mainLayout: {
     gap: 16,
   },
@@ -667,6 +664,10 @@ const styles = StyleSheet.create({
   bottomActions: {
     paddingTop: 8,
     alignItems: 'stretch',
+  },
+  bottomAccountActionsWrap: {
+    paddingTop: 10,
+    alignItems: 'center',
   },
   bottomSaveButton: {
     alignSelf: 'stretch',
@@ -903,7 +904,6 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     paddingHorizontal: 18,
     alignItems: 'center',
-    alignSelf: 'flex-start',
   },
   dangerButtonText: {
     color: '#b91c1c',

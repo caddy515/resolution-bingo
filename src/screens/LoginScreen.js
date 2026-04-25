@@ -28,24 +28,32 @@ export default function LoginScreen({ error, loading, onBack, onForgotPassword, 
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <SectionCard title="Welcome back" description="Log in to keep your bingo card synced across iOS and web.">
           <View style={styles.form}>
             <TextInput
               autoCapitalize="none"
+              autoComplete="email"
               autoCorrect={false}
+              editable={!loading}
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor="#94a3b8"
               style={styles.input}
+              textContentType="username"
               value={email}
               onChangeText={setEmail}
             />
             <TextInput
+              autoCapitalize="none"
+              autoComplete="current-password"
+              autoCorrect={false}
+              editable={!loading}
               placeholder="Password"
               placeholderTextColor="#94a3b8"
               secureTextEntry
               style={styles.input}
+              textContentType="password"
               value={password}
               onChangeText={setPassword}
             />

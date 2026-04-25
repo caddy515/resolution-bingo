@@ -61,7 +61,8 @@
           "photosPermission": "Allow Resolution Bingo to access your photo library.",
           "savePhotosPermission": "Allow Resolution Bingo to save card snapshots to your photo library."
         }
-      ]
+      ],
+      "expo-sharing"
     ]
   }
 }

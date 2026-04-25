@@ -657,7 +657,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 8,
     gap: 10,
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   progressMeta: {
     flexDirection: 'row',

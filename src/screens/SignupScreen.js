@@ -60,7 +60,7 @@ export default function SignupScreen({ error, loading, onBack, onLogin, onSignup
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <SectionCard
           title="Create your account"
           description="Your bingo card will live in Firestore so the same data is available on iOS and web."
@@ -68,28 +68,41 @@ export default function SignupScreen({ error, loading, onBack, onLogin, onSignup
           <View style={styles.form}>
             <TextInput
               autoCapitalize="none"
+              autoComplete="email"
               autoCorrect={false}
+              editable={!loading}
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor="#94a3b8"
               style={styles.input}
+              textContentType="emailAddress"
               value={email}
               onChangeText={setEmail}
             />
             <TextInput
+              autoCapitalize="none"
+              autoComplete="new-password"
+              autoCorrect={false}
+              editable={!loading}
               placeholder="Password"
               placeholderTextColor="#94a3b8"
               secureTextEntry
               style={styles.input}
+              textContentType="newPassword"
               value={password}
               onChangeText={setPassword}
             />
             <Text style={styles.helperText}>Use 10+ characters with uppercase, lowercase, and a number.</Text>
             <TextInput
+              autoCapitalize="none"
+              autoComplete="new-password"
+              autoCorrect={false}
+              editable={!loading}
               placeholder="Confirm password"
               placeholderTextColor="#94a3b8"
               secureTextEntry
               style={styles.input}
+              textContentType="oneTimeCode"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />

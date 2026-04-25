@@ -91,6 +91,5 @@ export async function deleteAllUserData(uid) {
     batch.delete(documentSnapshot.ref);
   });
 
-  batch.delete(doc(firestore, 'users', uid));
   await batch.commit();
 }
