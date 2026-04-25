@@ -345,10 +345,14 @@ export default function BuilderScreen({
                 value={title}
                 onChangeText={setTitle}
                 placeholder="My 2026 Card"
+                placeholderTextColor="#94a3b8"
                 autoCorrect={false}
+                autoCapitalize="words"
                 autoComplete="off"
-                textContentType="none"
+                editable={!loading}
                 importantForAutofill="no"
+                spellCheck={false}
+                textContentType="none"
               />
             </View>
           </SectionCard>
@@ -365,9 +369,12 @@ export default function BuilderScreen({
                 placeholder="Examples: Faith, Kids, Creativity"
                 placeholderTextColor="#94a3b8"
                 autoCorrect={false}
+                autoCapitalize="words"
                 autoComplete="off"
-                textContentType="none"
+                editable={!loading}
                 importantForAutofill="no"
+                spellCheck={false}
+                textContentType="none"
               />
               <Pressable onPress={addCategory} style={({ pressed }) => [styles.primaryButton, styles.inlineButton, pressed && styles.pressed]}>
                 <Text style={styles.primaryButtonText}>Add</Text>
@@ -390,13 +397,6 @@ export default function BuilderScreen({
               ))}
             </View>
 
-            <View style={styles.targetNotice}>
-              <Text style={styles.targetNoticeText}>
-                Ideas add into the selected square: {activeEntryIndex + 1}
-                {activeEntryIndex === CENTER_INDEX ? ' (Center Square freebie)' : ''}
-              </Text>
-            </View>
-
             <View style={styles.ideaList}>
               {(allCategories[selectedIdeaCategory] || []).map((idea) => (
                 <View key={`${selectedIdeaCategory}-${idea}`} style={styles.ideaCard}>
@@ -405,7 +405,7 @@ export default function BuilderScreen({
                     onPress={() => addIdeaToBoard(idea, selectedIdeaCategory)}
                     style={({ pressed }) => [styles.secondaryButton, styles.addIdeaButton, pressed && styles.pressed]}
                   >
-                    <Text style={styles.secondaryButtonText}>Add to selected square</Text>
+                    <Text style={styles.secondaryButtonText}>Add to card</Text>
                   </Pressable>
                 </View>
               ))}
@@ -448,7 +448,6 @@ export default function BuilderScreen({
                     style={[
                       styles.entryCard,
                       entryColumns === 2 && styles.entryCardWide,
-                      activeEntryIndex === index && !isCenter && styles.activeEntryCard,
                       isCenter && styles.centerEntryCard,
                     ]}
                   >
@@ -456,16 +455,19 @@ export default function BuilderScreen({
                       {isCenter ? 'Square 13 (Center Square freebie)' : `Square ${index + 1}`}
                     </Text>
                     <TextInput
-                      editable
+                      editable={!loading}
                       multiline
                       placeholder={isCenter ? 'Center Square freebie' : `Goal ${index + 1}`}
                       placeholderTextColor="#94a3b8"
                       style={[styles.input, styles.textArea, isCenter && styles.centerFreebieInput]}
                       value={isCenter ? centerOption : entry.text}
                       autoCorrect={false}
+                      autoCapitalize="sentences"
                       autoComplete="off"
-                      textContentType="none"
                       importantForAutofill="no"
+                      scrollEnabled={false}
+                      spellCheck={false}
+                      textContentType="none"
                       onChangeText={(value) => {
                         if (isCenter) {
                           setCenterOption(value);
@@ -542,7 +544,6 @@ export default function BuilderScreen({
                     { width: previewCellWidth },
                     isCompactPhone && styles.previewSquareCompact,
                     index === CENTER_INDEX && styles.centerPreviewSquare,
-                    activeEntryIndex === index && index !== CENTER_INDEX && styles.activePreviewSquare,
                   ]}
                 >
                   {!isCompactPhone ? <Text style={styles.previewIndex}>{index + 1}</Text> : null}
@@ -733,10 +734,6 @@ const styles = StyleSheet.create({
   entryCardWide: {
     width: '48.5%',
   },
-  activeEntryCard: {
-    borderColor: '#fb923c',
-    backgroundColor: '#fff7ed',
-  },
   centerEntryCard: {
     borderColor: '#fdba74',
     backgroundColor: '#fff7ed',
@@ -783,21 +780,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#b91c1c',
   },
-  targetNotice: {
-    marginTop: 12,
-    marginBottom: 12,
-    padding: 12,
-    borderRadius: 14,
-    backgroundColor: '#fff7ed',
-    borderWidth: 1,
-    borderColor: '#fed7aa',
-  },
-  targetNoticeText: {
-    fontSize: 13,
-    lineHeight: 18,
-    color: '#9a3412',
-    fontWeight: '700',
-  },
   ideaText: {
     fontSize: 13,
     lineHeight: 18,
@@ -831,10 +813,6 @@ const styles = StyleSheet.create({
   centerPreviewSquare: {
     backgroundColor: '#fff7ed',
     borderColor: '#fdba74',
-  },
-  activePreviewSquare: {
-    borderColor: '#fb923c',
-    backgroundColor: '#fff7ed',
   },
   previewIndex: {
     fontSize: 9,
