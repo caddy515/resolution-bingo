@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -55,6 +56,7 @@ export default function SignupScreen({ error, loading, onBack, onLogin, onSignup
     }
 
     setLocalError('');
+    Keyboard.dismiss();
     await onSignup({ email, password });
   }
 
@@ -68,39 +70,45 @@ export default function SignupScreen({ error, loading, onBack, onLogin, onSignup
           <View style={styles.form}>
             <TextInput
               autoCapitalize="none"
-              autoComplete="email"
+              autoComplete="off"
               autoCorrect={false}
               editable={!loading}
+              importantForAutofill="no"
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor="#94a3b8"
+              spellCheck={false}
               style={styles.input}
-              textContentType="emailAddress"
+              textContentType="none"
               value={email}
               onChangeText={setEmail}
             />
             <TextInput
               autoCapitalize="none"
-              autoComplete="new-password"
+              autoComplete="off"
               autoCorrect={false}
               editable={!loading}
+              importantForAutofill="no"
               placeholder="Password"
               placeholderTextColor="#94a3b8"
               secureTextEntry
+              spellCheck={false}
               style={styles.input}
-              textContentType="newPassword"
+              textContentType="oneTimeCode"
               value={password}
               onChangeText={setPassword}
             />
             <Text style={styles.helperText}>Use 10+ characters with uppercase, lowercase, and a number.</Text>
             <TextInput
               autoCapitalize="none"
-              autoComplete="new-password"
+              autoComplete="off"
               autoCorrect={false}
               editable={!loading}
+              importantForAutofill="no"
               placeholder="Confirm password"
               placeholderTextColor="#94a3b8"
               secureTextEntry
+              spellCheck={false}
               style={styles.input}
               textContentType="oneTimeCode"
               value={confirmPassword}
@@ -113,11 +121,17 @@ export default function SignupScreen({ error, loading, onBack, onLogin, onSignup
               <Text style={styles.primaryButtonText}>{loading ? 'Creating account...' : 'Create account'}</Text>
             </Pressable>
 
-            <Pressable onPress={onLogin} style={styles.secondaryButton}>
+            <Pressable onPress={() => {
+              Keyboard.dismiss();
+              onLogin();
+            }} style={styles.secondaryButton}>
               <Text style={styles.secondaryButtonText}>Already have an account? Log in</Text>
             </Pressable>
 
-            <Pressable onPress={onBack} style={styles.textButton}>
+            <Pressable onPress={() => {
+              Keyboard.dismiss();
+              onBack();
+            }} style={styles.textButton}>
               <Text style={styles.backLabel}>Back</Text>
             </Pressable>
           </View>

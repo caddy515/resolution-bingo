@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
+  Keyboard,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -83,6 +84,10 @@ export default function BuilderScreen({
   const [selectedIdeaCategory, setSelectedIdeaCategory] = useState('Fitness');
   const [activeEntryIndex, setActiveEntryIndex] = useState(0);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    Keyboard.dismiss();
+  }, []);
 
   useEffect(() => {
     if (initialState) {

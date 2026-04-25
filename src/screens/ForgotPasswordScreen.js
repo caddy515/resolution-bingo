@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -23,6 +24,7 @@ export default function ForgotPasswordScreen({ error, loading, onBack, onSubmit 
     }
 
     setLocalError('');
+    Keyboard.dismiss();
     const result = await onSubmit(email);
 
     if (result?.ok) {
@@ -37,14 +39,16 @@ export default function ForgotPasswordScreen({ error, loading, onBack, onSubmit 
           <View style={styles.form}>
             <TextInput
               autoCapitalize="none"
-              autoComplete="email"
+              autoComplete="off"
               autoCorrect={false}
               editable={!loading}
+              importantForAutofill="no"
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor="#94a3b8"
+              spellCheck={false}
               style={styles.input}
-              textContentType="emailAddress"
+              textContentType="none"
               value={email}
               onChangeText={(value) => {
                 setEmail(value);
@@ -59,7 +63,10 @@ export default function ForgotPasswordScreen({ error, loading, onBack, onSubmit 
               <Text style={styles.primaryButtonText}>{loading ? 'Sending...' : 'Send reset email'}</Text>
             </Pressable>
 
-            <Pressable onPress={onBack} style={styles.secondaryButton}>
+            <Pressable onPress={() => {
+              Keyboard.dismiss();
+              onBack();
+            }} style={styles.secondaryButton}>
               <Text style={styles.secondaryButtonText}>Back to log in</Text>
             </Pressable>
           </View>

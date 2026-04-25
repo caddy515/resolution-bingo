@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -23,6 +24,7 @@ export default function LoginScreen({ error, loading, onBack, onForgotPassword, 
     }
 
     setLocalError('');
+    Keyboard.dismiss();
     await onLogin({ email, password });
   }
 
@@ -33,27 +35,31 @@ export default function LoginScreen({ error, loading, onBack, onForgotPassword, 
           <View style={styles.form}>
             <TextInput
               autoCapitalize="none"
-              autoComplete="email"
+              autoComplete="off"
               autoCorrect={false}
               editable={!loading}
+              importantForAutofill="no"
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor="#94a3b8"
+              spellCheck={false}
               style={styles.input}
-              textContentType="username"
+              textContentType="none"
               value={email}
               onChangeText={setEmail}
             />
             <TextInput
               autoCapitalize="none"
-              autoComplete="current-password"
+              autoComplete="off"
               autoCorrect={false}
               editable={!loading}
+              importantForAutofill="no"
               placeholder="Password"
               placeholderTextColor="#94a3b8"
               secureTextEntry
+              spellCheck={false}
               style={styles.input}
-              textContentType="password"
+              textContentType="oneTimeCode"
               value={password}
               onChangeText={setPassword}
             />
@@ -64,15 +70,24 @@ export default function LoginScreen({ error, loading, onBack, onForgotPassword, 
               <Text style={styles.primaryButtonText}>{loading ? 'Logging in...' : 'Log in'}</Text>
             </Pressable>
 
-            <Pressable onPress={onForgotPassword} style={styles.textButton}>
+            <Pressable onPress={() => {
+              Keyboard.dismiss();
+              onForgotPassword();
+            }} style={styles.textButton}>
               <Text style={styles.textButtonLabel}>Forgot your password?</Text>
             </Pressable>
 
-            <Pressable onPress={onSignup} style={styles.secondaryButton}>
+            <Pressable onPress={() => {
+              Keyboard.dismiss();
+              onSignup();
+            }} style={styles.secondaryButton}>
               <Text style={styles.secondaryButtonText}>Create account</Text>
             </Pressable>
 
-            <Pressable onPress={onBack} style={styles.textButton}>
+            <Pressable onPress={() => {
+              Keyboard.dismiss();
+              onBack();
+            }} style={styles.textButton}>
               <Text style={styles.backLabel}>Back</Text>
             </Pressable>
           </View>
