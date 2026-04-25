@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, writeBatch } from 'firebase/firestore';
 import { db, hasFirebaseConfig, firebaseSetupMessage } from './config';
 import { sanitizeLoadedCard } from '../utils/cardTransforms';
 
@@ -80,4 +80,17 @@ export async function saveUserCard(uid, card) {
 
 export async function deleteUserCard(uid, cardId) {
   await deleteDoc(doc(ensureFirestore(), 'users', uid, 'cards', cardId));
+}
+
+export async function deleteAllUserData(uid) {
+  const firestore = ensureFirestore();
+  const cardsSnapshot = await getDocs(collection(firestore, 'users', uid, 'cards'));
+  const batch = writeBatch(firestore);
+
+  cardsSnapshot.forEach((documentSnapshot) => {
+    batch.delete(documentSnapshot.ref);
+  });
+
+  batch.delete(doc(firestore, 'users', uid));
+  await batch.commit();
 }

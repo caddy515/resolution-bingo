@@ -11,13 +11,14 @@ import BuilderScreen from './src/screens/BuilderScreen';
 import CardScreen from './src/screens/CardScreen';
 import { hasFirebaseConfig, firebaseSetupMessage } from './src/firebase/config';
 import {
+  deleteCurrentUserAccount,
   subscribeToAuthChanges,
   signInWithEmail,
   signOutCurrentUser,
   signUpWithEmail,
   sendPasswordResetEmailToUser,
 } from './src/firebase/auth';
-import { deleteUserCard, loadUserCards, saveUserCard } from './src/firebase/firestore';
+import { deleteAllUserData, deleteUserCard, loadUserCards, saveUserCard } from './src/firebase/firestore';
 import { builderStateToCard, cardToBuilderState } from './src/utils/cardTransforms';
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
   const [authActionLoading, setAuthActionLoading] = useState(false);
   const [authError, setAuthError] = useState('');
   const [cardLoading, setCardLoading] = useState(false);
+  const [accountDeleteLoading, setAccountDeleteLoading] = useState(false);
   const [cardError, setCardError] = useState('');
   const [cards, setCards] = useState([]);
   const [activeCardId, setActiveCardId] = useState(null);
@@ -216,20 +218,45 @@ export default function App() {
     }
   }
 
+  async function handleDeleteAccount() {
+    if (!authUser) {
+      return;
+    }
+
+    setAccountDeleteLoading(true);
+    setCardError('');
+
+    try {
+      await deleteAllUserData(authUser.uid);
+      await deleteCurrentUserAccount();
+    } catch (error) {
+      setCardError(
+        error.message ||
+          'Unable to delete your account right now. If prompted by Firebase, sign in again and retry.'
+      );
+    } finally {
+      setAccountDeleteLoading(false);
+    }
+  }
+
   function handleCreateCard() {
     setBuilderDraft(null);
     setBuilderMode('create');
     setScreen('builder');
   }
 
-  if (authLoading || cardLoading) {
+  if (authLoading || cardLoading || accountDeleteLoading) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.loadingScreen}>
           <StatusBar style="dark" />
           <ActivityIndicator size="large" color="#ea580c" />
           <Text style={styles.loadingText}>
-            {authLoading ? 'Checking your session...' : 'Loading your bingo card...'}
+            {authLoading
+              ? 'Checking your session...'
+              : accountDeleteLoading
+                ? 'Deleting your account...'
+                : 'Loading your bingo card...'}
           </Text>
         </SafeAreaView>
       </SafeAreaProvider>
@@ -300,10 +327,12 @@ export default function App() {
 
         {authUser && screen === 'builder' ? (
           <BuilderScreen
+            deletingAccount={accountDeleteLoading}
             initialState={builderInitialState}
             loading={cardLoading}
             userEmail={authUser.email}
             onBack={activeCard ? () => setScreen('card') : undefined}
+            onDeleteAccount={handleDeleteAccount}
             onLogout={handleLogout}
             onSave={handleSaveBuilder}
           />
@@ -313,8 +342,10 @@ export default function App() {
           <CardScreen
             card={activeCard}
             cards={cards}
+            deletingAccount={accountDeleteLoading}
             userEmail={authUser.email}
             onCreateCard={handleCreateCard}
+            onDeleteAccount={handleDeleteAccount}
             onDeleteCard={handleDeleteCard}
             onEditCard={() => {
               setBuilderDraft(cardToBuilderState(activeCard));

@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
   sendPasswordResetEmail,
   sendEmailVerification,
@@ -73,6 +74,20 @@ export async function sendPasswordResetEmailToUser(email) {
 export async function signOutCurrentUser() {
   try {
     return await signOut(ensureAuth());
+  } catch (error) {
+    throw new Error(normalizeAuthError(error));
+  }
+}
+
+export async function deleteCurrentUserAccount() {
+  try {
+    const currentAuth = ensureAuth();
+
+    if (!currentAuth.currentUser) {
+      throw new Error('No signed-in account is available to delete.');
+    }
+
+    await deleteUser(currentAuth.currentUser);
   } catch (error) {
     throw new Error(normalizeAuthError(error));
   }

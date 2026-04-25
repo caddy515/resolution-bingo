@@ -66,8 +66,10 @@ function getGoalTextSizing(text, isCompactPhone) {
 export default function CardScreen({
   card,
   cards,
+  deletingAccount,
   userEmail,
   onCreateCard,
+  onDeleteAccount,
   onDeleteCard,
   onEditCard,
   onLogout,
@@ -182,6 +184,17 @@ export default function CardScreen({
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Delete', style: 'destructive', onPress: () => onDeleteCard(cardId) },
+      ]
+    );
+  }
+
+  function confirmDeleteAccount() {
+    Alert.alert(
+      'Delete account?',
+      'This permanently deletes your Resolution Bingo account and all saved bingo cards. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: deletingAccount ? 'Deleting...' : 'Delete account', style: 'destructive', onPress: onDeleteAccount },
       ]
     );
   }
@@ -455,6 +468,9 @@ export default function CardScreen({
           </SectionCard>
 
           <View style={styles.bottomLogoutWrap}>
+            <Pressable onPress={confirmDeleteAccount} style={({ pressed }) => [styles.dangerButton, pressed && styles.pressed]}>
+              <Text style={styles.dangerButtonText}>{deletingAccount ? 'Deleting account...' : 'Delete account'}</Text>
+            </Pressable>
             <Pressable onPress={onLogout} style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}>
               <Text style={styles.secondaryButtonText}>Log out</Text>
             </Pressable>
@@ -640,6 +656,8 @@ const styles = StyleSheet.create({
   bottomLogoutWrap: {
     marginTop: 4,
     marginBottom: 8,
+    gap: 10,
+    alignItems: 'flex-start',
   },
   progressMeta: {
     flexDirection: 'row',
@@ -741,6 +759,20 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     color: '#0f172a',
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  dangerButton: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#fecaca',
+    backgroundColor: '#fef2f2',
+    paddingVertical: 13,
+    paddingHorizontal: 18,
+    alignItems: 'center',
+  },
+  dangerButtonText: {
+    color: '#b91c1c',
     fontSize: 14,
     fontWeight: '800',
   },

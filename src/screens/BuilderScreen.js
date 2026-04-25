@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -49,7 +50,16 @@ function getPreviewGoalTextSizing(text) {
   return { fontSize: 9, lineHeight: 10 };
 }
 
-export default function BuilderScreen({ initialState, loading, userEmail, onBack, onLogout, onSave }) {
+export default function BuilderScreen({
+  deletingAccount,
+  initialState,
+  loading,
+  userEmail,
+  onBack,
+  onDeleteAccount,
+  onLogout,
+  onSave,
+}) {
   const { width } = useWindowDimensions();
   const isWide = width >= 1100;
   const isCompactPhone = width < 430;
@@ -279,6 +289,17 @@ export default function BuilderScreen({ initialState, loading, userEmail, onBack
     });
   }
 
+  function confirmDeleteAccount() {
+    Alert.alert(
+      'Delete account?',
+      'This permanently deletes your Resolution Bingo account and all saved bingo cards. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: deletingAccount ? 'Deleting...' : 'Delete account', style: 'destructive', onPress: onDeleteAccount },
+      ]
+    );
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
       <View style={[styles.headerRow, isWide && styles.headerRowWide]}>
@@ -311,6 +332,12 @@ export default function BuilderScreen({ initialState, loading, userEmail, onBack
           <Text style={styles.errorText}>{error}</Text>
         </View>
       ) : null}
+
+      <View style={styles.accountActionsWrap}>
+        <Pressable onPress={confirmDeleteAccount} style={({ pressed }) => [styles.dangerButton, pressed && styles.pressed]}>
+          <Text style={styles.dangerButtonText}>{deletingAccount ? 'Deleting account...' : 'Delete account'}</Text>
+        </Pressable>
+      </View>
 
       <View style={[styles.mainLayout, isWide && styles.mainLayoutWide]}>
         <View style={[styles.leftColumn, isWide && styles.leftColumnWide]}>
@@ -615,6 +642,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
   },
+  accountActionsWrap: {
+    paddingHorizontal: 2,
+  },
   mainLayout: {
     gap: 16,
   },
@@ -862,6 +892,21 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     color: '#0f172a',
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  dangerButton: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#fecaca',
+    backgroundColor: '#fef2f2',
+    paddingVertical: 13,
+    paddingHorizontal: 18,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  dangerButtonText: {
+    color: '#b91c1c',
     fontSize: 14,
     fontWeight: '800',
   },
